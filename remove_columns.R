@@ -12,7 +12,7 @@ df <- subset(raw_full_data, select = -c(Response.Type, IP.Address, Response.ID,
                                         Recipient.Last.Name, Recipient.First.Name,
                                         Recipient.Email, External.Data.Reference,
                                         Location.Latitude, Location.Longitude,
-                                        Distribution.Channel))
+                                        Distribution.Channel, Subject.s.Signature))
 
 # Export dataframe as csv
 write.csv(df, 'E:/condensed_duplicate_data.csv', row.names=FALSE)
