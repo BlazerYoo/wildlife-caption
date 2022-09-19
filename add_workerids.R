@@ -23,6 +23,9 @@ merged_data <- na.omit(merged_data)
 merged_data <- merged_data %>%
   select("WorkerId", everything())
 
+# Sort by Start.Date
+merged_data <- merged_data[order(Start.Date),]
+
 # Remove rows with duplicate WorkerIds
 #   https://www.datanovia.com/en/lessons/identify-and-remove-duplicate-data-in-r/
 merged_data = merged_data[!duplicated(merged_data$WorkerId),]
