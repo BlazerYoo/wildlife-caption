@@ -23,5 +23,9 @@ merged_data <- na.omit(merged_data)
 merged_data <- merged_data %>%
   select("WorkerId", everything())
 
+# Remove rows with duplicate WorkerIds
+#   https://www.datanovia.com/en/lessons/identify-and-remove-duplicate-data-in-r/
+merged_data = merged_data[!duplicated(merged_data$WorkerId),]
+
 # Export dataframe as csv
 write.csv(merged_data, 'E:/merged.csv', row.names=FALSE)
