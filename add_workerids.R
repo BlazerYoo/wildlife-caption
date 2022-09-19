@@ -31,4 +31,4 @@ merged_data <- merged_data[order(merged_data$Start.Date),]
 merged_data = merged_data[!duplicated(merged_data$WorkerId),]
 
 # Export dataframe as csv
-write.csv(merged_data, 'E:/merged.csv', row.names=FALSE)
+write.csv(merged_data, 'E:/no_duplicate_dataset.csv', row.names=FALSE)
