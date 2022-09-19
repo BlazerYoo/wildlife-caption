@@ -1,3 +1,5 @@
-# wildlife caption
+# Wildlife Captioning
 
-Full compiled data in `data` folder (includes potential duplicates)
+### Datasets in `data` folder:
+- `no_id_full_data.csv`: all PI removed, full dataset from second survey deployment
+- `mturk_workends.csv`: mapping WorkerID to survey code
