@@ -12,17 +12,30 @@ ethnicity <- dataset$`Please.specify.your.ethnicity.`
 education <- dataset$`What.is.the.highest.degree.or.level.of.school.you.have.completed..If.currently.enrolled..what.is.your.highest.degree.received.`
 treatment <- dataset$`Treatment.shown`
 
+
 ## demographics for whole dataset
-table(gender) # gender
-hist(age) # age
-hist(ethnicity) # ethnicity
-table(education) # education
+# gender
+gender_all <- table(gender) 
+barplot(gender_all, main = "Gender Distribution", xlab = "Gender", ylab ="number of respondents", 
+        legend = rownames(gender_all), beside=TRUE)
+# age
+hist(age) 
+# ethnicity
+eth_all <- table(ethnicity)
+barplot(eth_all, main = "Ethnicity Distribution", xlab = "Ethnicity", ylab ="number of respondents", 
+                   legend = rownames(eth_all), beside=TRUE)
+# education
+edu_all <- table(education)
+barplot(edu_all, main = "Education Distribution", xlab = "Education", ylab ="number of respondents", 
+        legend = rownames(edu_all), beside=TRUE)
+
 
 ## split into 4 datasets based on image
 image1 = dataset[which (treatment == 'Image1'), ]
 image2 = dataset[which (treatment == 'Image2'), ]
 image3 = dataset[which (treatment == 'Image3'), ]
 image4 = dataset[which (treatment == 'Image4'), ]
+
 
 ## demographics based on image
 # age
