@@ -3,7 +3,7 @@
 library(tidyverse)
 
 # read in dataset: no_duplicate_dataset.csv
-dataset <- read.csv(file = 'https://raw.githubusercontent.com/BlazerYoo/wildlife-caption/mh-data-analysis/data/no_duplicate_dataset.csv?token=GHSAT0AAAAAABYYWKV3LPOLJP7WX4HGMXHYYZLHJRA')
+dataset <- read.csv(file = 'https://raw.githubusercontent.com/BlazerYoo/wildlife-caption/main/data/no_duplicate_dataset.csv?token=GHSAT0AAAAAABY2TBXDP3T4FRYGE6BL6PIYYZUTR5A')
 
 # define variables for columns 
 age <- dataset$`What.is.your.age.`
@@ -42,8 +42,18 @@ image4 = dataset[which (treatment == 'Image4'), ]
 boxplot(age~treatment) 
 # ethnicity
 eth_counts <- table(ethnicity, treatment)
+# encode ethnicity labels
+rownames(eth_counts)[rownames(eth_counts) == "1"] = "Caucasian"
+rownames(eth_counts)[rownames(eth_counts) == "2"] = "Hispanic or Latino"
+rownames(eth_counts)[rownames(eth_counts) == "3"] = "Black or African American"
+rownames(eth_counts)[rownames(eth_counts) == "4"] = "Native American or American Indian"
+rownames(eth_counts)[rownames(eth_counts) == "5"] = "Asian / Pacific Islander"
+rownames(eth_counts)[rownames(eth_counts) == "6"] = "Other / Mutliple"
+rownames(eth_counts)[rownames(eth_counts) == "7"] = "Prefer not to say"
 barplot(eth_counts, main = "Ethnicity vs Treatment Shown", xlab = "Treatment Shown", ylab ="number of respondents", 
-        legend = rownames(eth_counts), beside=TRUE) 
+        legend = rownames(eth_counts), args.legend = list(x = "topright",
+                                                          inset = c(-0.55, -0.3)),
+        beside=TRUE) 
 # gender
 gender_counts <- table(gender, treatment)
 barplot(gender_counts, main = "Gender vs Treatment Shown", xlab = "Treatment Shown", ylab ="number of respondents", 
