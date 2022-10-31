@@ -1,12 +1,12 @@
-# DATA CLEANING
-## ggplot
-## fix legends, color palette 
-## increase y axis
+# INITIAL DATA EXPLORATION
 
-library(tidyverse)
+library(ggplot2)
+#devtools::install_github("katiejolly/nationalparkcolors")
+library(nationalparkcolors)
+
 
 # read in dataset: no_duplicate_dataset.csv
-dataset <- read.csv(file = 'https://raw.githubusercontent.com/BlazerYoo/wildlife-caption/mh-data-analysis/data/no_duplicate_dataset.csv?token=GHSAT0AAAAAABYYWKV3LPOLJP7WX4HGMXHYYZLHJRA')
+dataset <- read.csv(file = 'https://raw.githubusercontent.com/BlazerYoo/wildlife-caption/mh-data-analysis/data/no_duplicate_dataset.csv?token=GHSAT0AAAAAAB2JTYKHFJZXKGAONIH6CJ3WY2VYLCQ')
 
 # define variables for columns 
 age <- dataset$`What.is.your.age.`
@@ -69,8 +69,21 @@ mode <- function(pet){which.max(tabulate(pet))}
 summary(pet)
 mode(pet)
 
-pet_ct <- table(pet, treatment)
-barplot(pet_ct, legend = rownames(pet_ct))
+pet_table <- table(pet, treatment)
+pet_table
+
+pet_df<- data.frame(pet, treatment)
+pet_df$pet <- paste("Score", pet_df$pet, sep="_")
+pet_df
+
+barplot(pet_ct,
+        legend=rownames(pet_ct),
+        #args.legend=list(x="topright", inset = c(-0.25,0)),
+        main="\"I would like to have this animal as a pet\" \n Likert Scale Survey Responses",
+        names.arg=c("Gorilla Control", "Gorilla Test", "Loris Control", "Loris Test"),
+        xlab = "Image",
+        ylab = "Number of Respondents")
+
 
 # This animal would make a good pet
 gpet <- dataset$`X...This.animal.would.make.a.good.pet.`
@@ -80,9 +93,12 @@ barplot(gpet_ct)
 
 # This animal is an endangered species.-> caption doesn't make a difference
 species <- dataset$`X...This.animal.is.an.endangered.species.`
-species_ct <- table(species, treatment)
-barplot(species_ct)
+endangered_df<- data.frame(species, treatment)
+endangered_df$species <- paste("Score", endangered_df$species, sep="_")
 
+
+# time to complete survey analysis
 time <- dataset$`Duration..in.seconds.`
 boxplot(time~treatment, outline=FALSE)
 summary(aov(time~treatment))
+
