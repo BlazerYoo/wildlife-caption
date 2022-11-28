@@ -1,4 +1,4 @@
-# Create word clouds w/ taking the first word of all responses
+# Create word clouds w/o multi-word responses
 
 # Libraries
 library(tidyverse)
