@@ -1,3 +1,5 @@
+# Create word clouds w/ taking the first word of all responses
+
 # Libraries
 library(tidyverse)
 library(wordcloud)
@@ -103,18 +105,3 @@ wordcloud(words = df3$word, freq = df3$freq, min.freq = 1,
 wordcloud(words = df4$word, freq = df4$freq, min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.35,
           colors=brewer.pal(8, "Dark2"))
-
-# Create word cloud w/ wordcloud2
-wordcloud2(data=df, size=1.6, color='random-dark')
-wordcloud2(data=df, size = 0.7, shape = 'pentagon')
-
-# Case-sensitive (take first word)
-
-
-# Case-insensitive (take first word)
-
-
-# Case-sensitive (remove multi-words)
-
-
-# Case-insensitive (remove multi-words)
