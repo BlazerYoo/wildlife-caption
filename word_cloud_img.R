@@ -5,7 +5,7 @@ library(stringr)
 library(tm)
 
 # Load data
-data <- read.csv(file = 'https://raw.githubusercontent.com/BlazerYoo/wildlife-caption/main/data/data_finished_surveys.csv?token=GHSAT0AAAAAAB3WS2WT56JT5UION6BMNNAUY4EI53Q')
+data <- read.csv(file = 'https://raw.githubusercontent.com/BlazerYoo/wildlife-caption/main/data/data_finished_surveys.csv?token=GHSAT0AAAAAAB3WS2WTYBFO336VGWJEAWO4Y4E5H6A')
 
 # Take the word + image column
 word_col = "To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post."
@@ -79,6 +79,12 @@ dtm_img4 <- TermDocumentMatrix(docs_img4)
 matrix_img4 <- as.matrix(dtm_img4)
 words_img4 <- sort(rowSums(matrix_img4),decreasing=TRUE)
 df4 <- data.frame(word = names(words_img4),freq=words_img4)
+
+# Remove words that only appear once
+df1 <- df1[df1$freq > 1,]
+df2 <- df2[df2$freq > 1,]
+df3 <- df3[df3$freq > 1,]
+df4 <- df4[df4$freq > 1,]
 
 # Create word cloud
 set.seed(1234) # for reproducibility
