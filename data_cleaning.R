@@ -3,7 +3,7 @@
 library(tidyverse)
 
 # read in dataset: no_duplicate_dataset.csv
-dataset <- read.csv(file = 'https://raw.githubusercontent.com/BlazerYoo/wildlife-caption/main/data/no_duplicate_dataset.csv?token=GHSAT0AAAAAABY2TBXDP3T4FRYGE6BL6PIYYZUTR5A')
+dataset <- read.csv(file = 'https://raw.githubusercontent.com/BlazerYoo/wildlife-caption/main/data/data_finished_surveys.csv?token=GHSAT0AAAAAAB3SK6A7R4Q3PUVTBOATPMCKY4CO2WQ')
 
 # define variables for columns 
 age <- dataset$`What.is.your.age.`
