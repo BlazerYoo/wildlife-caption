@@ -7,24 +7,25 @@ library(stringr)
 library(tm)
 
 # Load data
-data <- read.csv(file = 'https://raw.githubusercontent.com/BlazerYoo/wildlife-caption/main/data/data_finished_surveys.csv?token=GHSAT0AAAAAAB3WS2WTYBFO336VGWJEAWO4Y4E5H6A')
+data <- read.csv(file = 'https://raw.githubusercontent.com/BlazerYoo/wildlife-caption/main/data/data_finished_surveys.csv?token=GHSAT0AAAAAAB3WS2WS7LYMQXB6G3HN3WYMY4FCL7A')
 
 # Take the word + image column
-word_col = "To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post."
-img_col = "image"
-words_img <- data[c(word_col, img_col)]
+words_col_name = "To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post."
+img_col_name = "image"
+words_img <- data[c(words_col_name, img_col_name)]
 
 # Create word dataframe for each image
-word_img1 <- words_img[words_img$image == "Image1",]
-word_img2 <- words_img[words_img$image == "Image2",]
-word_img3 <- words_img[words_img$image == "Image3",]
-word_img4 <- words_img[words_img$image == "Image4",]
+img_col <- words_img$image
+words_img1 <- words_img[img_col == "Image1",]
+words_img2 <- words_img[img_col == "Image2",]
+words_img3 <- words_img[img_col == "Image3",]
+words_img4 <- words_img[img_col == "Image4",]
 
 # Extract just the first word
-first_word_img1 <- word(word_img1$To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post., 1)
-first_word_img2 <- word(word_img2$To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post., 1)
-first_word_img3 <- word(word_img3$To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post., 1)
-first_word_img4 <- word(word_img4$To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post., 1)
+first_word_img1 <- word(words_img1$To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post., 1)
+first_word_img2 <- word(words_img2$To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post., 1)
+first_word_img3 <- word(words_img3$To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post., 1)
+first_word_img4 <- word(words_img4$To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post., 1)
 
 # Create corpus from the first words
 docs_img1 <- Corpus(VectorSource(first_word_img1))

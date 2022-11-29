@@ -7,30 +7,31 @@ library(stringr)
 library(tm)
 
 # Load data
-data <- read.csv(file = 'https://raw.githubusercontent.com/BlazerYoo/wildlife-caption/main/data/data_finished_surveys.csv?token=GHSAT0AAAAAAB3WS2WTYBFO336VGWJEAWO4Y4E5H6A')
+data <- read.csv(file = 'https://raw.githubusercontent.com/BlazerYoo/wildlife-caption/main/data/data_finished_surveys.csv?token=GHSAT0AAAAAAB3WS2WSI7IZB7WFN2NZODP6Y4FS7RQ')
 
 # Take the word + image column
-word_col = "To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post."
-img_col = "image"
-words_img <- data[c(word_col, img_col)]
+words_col_name = "To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post."
+img_col_name = "image"
+words_img <- data[c(words_col_name, img_col_name)]
 
 # Create word dataframe for each image
-word_img1 <- words_img[words_img$image == "Image1",]
-word_img2 <- words_img[words_img$image == "Image2",]
-word_img3 <- words_img[words_img$image == "Image3",]
-word_img4 <- words_img[words_img$image == "Image4",]
+img_col <- words_img$image
+words_img1 <- words_img[img_col == "Image1",]
+words_img2 <- words_img[img_col == "Image2",]
+words_img3 <- words_img[img_col == "Image3",]
+words_img4 <- words_img[img_col == "Image4",]
 
-# Extract just the first word
-first_word_img1 <- word_img1[which (str_count(word_img1$To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post. ,"\\W+") == 1)]
-first_word_img2 <- word_img1[which (str_count(word_img1$To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post. ,"\\W+") == 1)] 
-first_word_img3 <- word_img1[which (str_count(word_img1$To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post. ,"\\W+") == 1)] 
-first_word_img4 <- word_img1[which (str_count(word_img1$To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post. ,"\\W+") == 1)]
+# Remove responses with multi-words
+one_word_img1 <- word_img1[which (str_count(word_img1$To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post. ,"\\W+") == 0),]
+one_word_img2 <- word_img2[which (str_count(word_img2$To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post. ,"\\W+") == 0),] 
+one_word_img3 <- word_img3[which (str_count(word_img3$To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post. ,"\\W+") == 0),] 
+one_word_img4 <- word_img4[which (str_count(word_img4$To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post. ,"\\W+") == 0),]
 
 # Create corpus from the first words
-docs_img1 <- Corpus(VectorSource(first_word_img1))
-docs_img2 <- Corpus(VectorSource(first_word_img2))
-docs_img3 <- Corpus(VectorSource(first_word_img3))
-docs_img4 <- Corpus(VectorSource(first_word_img4))
+docs_img1 <- Corpus(VectorSource(one_word_img1))
+docs_img2 <- Corpus(VectorSource(one_word_img2))
+docs_img3 <- Corpus(VectorSource(one_word_img3))
+docs_img4 <- Corpus(VectorSource(one_word_img4))
 
 # Clean
 docs_img1 <- docs_img1 %>%
