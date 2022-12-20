@@ -106,3 +106,8 @@ wordcloud(words = df3$word, freq = df3$freq, min.freq = 1,
 wordcloud(words = df4$word, freq = df4$freq, min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.35,
           colors=brewer.pal(8, "Dark2"))
+
+sum(df1$freq)
+sum(df2$freq)
+sum(df3$freq)
+sum(df4$freq)
