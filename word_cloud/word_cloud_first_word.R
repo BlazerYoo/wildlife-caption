@@ -1,13 +1,16 @@
 # Create word clouds w/ taking the first word of all responses
 
+devtools::install_github("katiejolly/nationalparkcolors")
+
 # Libraries
 library(tidyverse)
 library(wordcloud)
 library(stringr)
 library(tm)
+library(nationalparkcolors)
 
 # Load data
-data <- read.csv(file = 'https://raw.githubusercontent.com/BlazerYoo/wildlife-caption/main/data/data_finished_surveys.csv?token=GHSAT0AAAAAAB3WS2WS7LYMQXB6G3HN3WYMY4FCL7A')
+data <- read.csv(file = 'https://raw.githubusercontent.com/BlazerYoo/wildlife-caption/main/data/data_finished_surveys.csv?token=GHSAT0AAAAAAB3WS2WTA6BFGVNDQRHYQHEYY4GLDJQ')
 
 # Take the word + image column
 words_col_name = "To.see.the.post.again..use.your.mouse.to.click.on.the..Back..button.....What.one.word.comes.to.mind.when.you.see.this.post."
@@ -83,26 +86,18 @@ matrix_img4 <- as.matrix(dtm_img4)
 words_img4 <- sort(rowSums(matrix_img4),decreasing=TRUE)
 df4 <- data.frame(word = names(words_img4),freq=words_img4)
 
-# Remove words that only appear once
-df1 <- df1[df1$freq > 1,]
-df2 <- df2[df2$freq > 1,]
-df3 <- df3[df3$freq > 1,]
-df4 <- df4[df4$freq > 1,]
-
 # Create word cloud
 set.seed(1234) # for reproducibility
-wordcloud(words = df1$word, freq = df1$freq, min.freq = 1,
-          max.words=200, random.order=FALSE, rot.per=0.35,
-          colors=brewer.pal(8, "Dark2"))
+wordcloud(words = df1$word, freq = df1$freq, min.freq = 2, rot.per=0.35,
+          random.order=FALSE, colors=park_palette(n=6, name="Acadia"))
 
-wordcloud(words = df2$word, freq = df2$freq, min.freq = 1,
-          max.words=200, random.order=FALSE, rot.per=0.35,
-          colors=brewer.pal(8, "Dark2"))
+wordcloud(words = df2$word, freq = df2$freq, min.freq = 2, rot.per=0.35,
+          random.order=FALSE, colors=park_palette(n=6, name="Acadia"))
 
-wordcloud(words = df3$word, freq = df3$freq, min.freq = 1,
-          max.words=200, random.order=FALSE, rot.per=0.35,
-          colors=brewer.pal(8, "Dark2"))
+wordcloud(words = df3$word, freq = df3$freq, min.freq = 2, rot.per=0.35,
+          random.order=FALSE, colors=park_palette(n=6, name="Acadia"))
 
+<<<<<<< Updated upstream
 wordcloud(words = df4$word, freq = df4$freq, min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.35,
           colors=brewer.pal(8, "Dark2"))
@@ -111,3 +106,7 @@ sum(df1$freq)
 sum(df2$freq)
 sum(df3$freq)
 sum(df4$freq)
+=======
+wordcloud(words = df4$word, freq = df4$freq, min.freq = 2, rot.per=0.35,
+          random.order=FALSE, colors=park_palette(n=6, name="Acadia"))
+>>>>>>> Stashed changes
