@@ -1,16 +1,14 @@
-devtools::install_github("katiejolly/nationalparkcolors")
-
 library(ggplot2)
 library(ggpubr)
-library(nationalparkcolors)
+library(fishualize)
 library(tidyverse)
 #library(ggrepel)
 #library(ggpmisc)
-library(gginnards)
+#library(gginnards)
 
 
 # Read in dataset
-dataset <- read.csv(file = 'https://raw.githubusercontent.com/BlazerYoo/wildlife-caption/main/data/data_finished_surveys.csv?token=GHSAT0AAAAAACAVXIZEO2EULA2QY7FKWAIMZBLEVNQ')
+dataset <- read.csv(file = 'https://raw.githubusercontent.com/BlazerYoo/wildlife-caption/main/data/data_finished_surveys.csv?token=GHSAT0AAAAAACBGLTPZ5DEYCH7SNVCN3NGEZBTRYQA')
 
 
 # Treatment: image #
@@ -32,22 +30,7 @@ loris_treatments <- loris_data$Treatment.shown
 
 
 # Generate plot
-generate_plot <- function(q, animal, data, treatments, plot_args){
-  
-  threshold <- plot_args[1]
-  size <- plot_args[2]
-  padding <- plot_args[3]
-  radius <- plot_args[4]
-  border <- plot_args[5]
-  hjust <- plot_args[6]
-  vjust <- plot_args[7]
-  lineWidth <- plot_args[8]
-  lineLen <- plot_args[9]
-  x0 <- plot_args[10]
-  y0 <- plot_args[11]
-  x1 <- plot_args[12]
-  y1 <- plot_args[13]
-  
+generate_plot <- function(q, animal, data, treatments) {
   
   # Truncate extended decimal values
   trunc_number_n_decimals <- function(numberToTrunc, nDecimals){
@@ -56,6 +39,11 @@ generate_plot <- function(q, animal, data, treatments, plot_args){
     decimalPartTrunc <- substr(x=splitNumber[2], start=1, stop=nDecimals)
     truncatedNumber <- as.numeric(paste0(splitNumber[1], ".", decimalPartTrunc))
     return(truncatedNumber)
+  }
+  
+  # Remove leading/trailing whitespace
+  trim <- function(x) {
+    gsub("(^[[:space:]]+|[[:space:]]+$)", "", x)
   }
   
   # Dataframe with just treatments and responses to given question
@@ -91,104 +79,13 @@ generate_plot <- function(q, animal, data, treatments, plot_args){
   
   # Titiel for barplot
   title <- gsub(".", " ", q, fixed=TRUE) %>% substring(5)
+  title <- trim(title)
+  print(title)
   
   # Normalized barplot
-  p <- ggplot(df, aes(x=Image, y=Freq, fill=Score)) + 
-    geom_bar(position=position_stack(reverse = TRUE), stat="identity", color="black", width=0.4) +
-    scale_fill_manual("Response", values=park_palette(n=5, name="Acadia"), 
-                      labels=c("Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"),
-                      guide=guide_legend(reverse=TRUE)) +
-    
-    geom_label(aes(label = paste0(Freq*100,"%")),
-               position=position_fill(vjust = 0.5, reverse = TRUE),
-               hjust = ifelse(df$Freq < threshold, abs(threshold / df$Freq) * -0.45, 0.3),
-               label.padding = unit(padding, "lines"),
-               label.r = unit(radius, "lines"),
-               label.size = border,
-               size = size,
-               color = "black",
-               fill= "white")
-  
-  # get the x and y coordinates of the label
-  label_data <- layer_data(p, i=2L)
-  print(label_data)
-  x1 <- label_data[1,]$x
-  y1 <- label_data[1,]$y
-
-  x2 <- label_data[2,]$x
-  y2 <- label_data[2,]$y
-
-  x3 <- label_data[3,]$x
-  y3 <- label_data[3,]$y
-  
-  x4 <- label_data[4,]$x
-  y4 <- label_data[4,]$y
-  
-  x5 <- label_data[5,]$x
-  y5 <- label_data[5,]$y
-  
-  x6 <- label_data[6,]$x
-  y6 <- label_data[6,]$y
-  
-  x7 <- label_data[7,]$x
-  y7 <- label_data[7,]$y
-  
-  x8 <- label_data[8,]$x
-  y8 <- label_data[8,]$y
-  
-  x9 <- label_data[9,]$x
-  y9 <- label_data[9,]$y
-  
-  x10 <- label_data[10,]$x
-  y10 <- label_data[10,]$y
-
   plot <- ggplot(df, aes(x=Image, y=Freq, fill=Score)) + 
-    geom_bar(position=position_stack(reverse = TRUE), stat="identity", color="black", width=0.4) +
-    scale_fill_manual("Response", values=park_palette(n=5, name="Acadia"), 
-                      labels=c("Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"),
-                      guide=guide_legend(reverse=TRUE)) +
-    
-    geom_segment(aes(x = x1, y = y1,
-                     xend = x1+ifelse(Freq < threshold, lineLen, 0.000000001),
-                     yend = y1), size = lineWidth, color = "red") +
-    geom_segment(aes(x = x2, y = y2,
-                     xend = x2+ifelse(Freq < threshold, lineLen, 0.000000001),
-                     yend = y2), size = lineWidth, color = "red") +
-    geom_segment(aes(x = x3, y = y3,
-                     xend = x3+ifelse(Freq < threshold, lineLen, 0.000000001),
-                     yend = y3), size = lineWidth, color = "red") +
-    geom_segment(aes(x = x4, y = y4,
-                     xend = x4+ifelse(Freq < threshold, lineLen, 0.000000001),
-                     yend = y4), size = lineWidth, color = "red") +
-    geom_segment(aes(x = x5, y = y5,
-                     xend = x5+ifelse(Freq < threshold, lineLen, 0.000000001),
-                     yend = y5), size = lineWidth, color = "red") +
-    geom_segment(aes(x = x6, y = y6,
-                     xend = x6+ifelse(Freq < threshold, lineLen, 0.000000001),
-                     yend = y6), size = lineWidth, color = "red") +
-    geom_segment(aes(x = x7, y = y7,
-                     xend = x7+ifelse(Freq < threshold, lineLen, 0.000000001),
-                     yend = y7), size = lineWidth, color = "red") +
-    geom_segment(aes(x = x8, y = y8,
-                     xend = x8+ifelse(Freq < threshold, lineLen, 0.000000001),
-                     yend = y8), size = lineWidth, color = "red") +
-    geom_segment(aes(x = x9, y = y9,
-                     xend = x9+ifelse(Freq < threshold, lineLen, 0.000000001),
-                     yend = y9), size = lineWidth, color = "red") +
-    geom_segment(aes(x = x10, y = y10,
-                     xend = x10+ifelse(Freq < threshold, lineLen, 0.000000001),
-                     yend = y10), size = lineWidth, color = "red") +
-    
-    geom_label(aes(label = paste0(Freq*100,"%")),
-               position=position_fill(vjust = 0.5, reverse = TRUE),
-               hjust = ifelse(df$Freq < threshold, abs(threshold / df$Freq) * -0.2, -0.6),
-               label.padding = unit(padding, "lines"),
-               label.r = unit(radius, "lines"),
-               label.size = border,
-               size = size,
-               color = "black",
-               fill= "white") +
-    
+    geom_bar(position=position_stack(reverse = FALSE), stat="identity", color="black", width=0.5) +
+    scale_fill_fish_d(option = "Epibulus_insidiator", direction = -1, labels=c("Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree")) +
     xlab("Image") +
     ylab("Percentage of Respondents") +
     scale_y_continuous(labels=scales::percent) +
@@ -210,54 +107,33 @@ generate_plot <- function(q, animal, data, treatments, plot_args){
 #X...This.animal.would.make.a.good.pet.
 #X...I.would.like.to.have.this.animal.as.a.pet.
 
-# Label staggering bar height threshold
-threshold = 0.1 # Stagger labels for bar sections that represent less than 10%
-size = 5 # Label text size
-padding = 0.2 # Label text padding
-radius = 0.05 # Label border radius
-border = 0.5 # Label border thickness
-hjust = -0.6 # Change horizontal position of label
-vjust = 0.5 # Change vertical position of label
-lineWidth = 1 # Change labeling line width
-lineLen = 0.3 # Change labeling line length
-x0 = 0 # Labeling line start x
-y0 = 0 # Labeling line start y
-x1 = 1 # Labeling line end x
-y1 = 1 # Labeling line end y
-
-
-plot_args <- c(threshold, size, padding, radius, border, hjust, vjust, lineWidth, lineLen, x0, y0, x1, y1)
 
 # Generate plots for gorilla posts
-plot1 <- generate_plot("X...This.post.depicts.wildlife.research.", "Gorilla", gorilla_data, gorilla_treatments, plot_args)
+plot1 <- generate_plot("X...This.post.depicts.wildlife.research.", "Gorilla", gorilla_data, gorilla_treatments)
 #plot1
-plot2 <- generate_plot("X...I.would.seek.out.an.experience.to.personally.interact.with.this.animal.", "Gorilla", gorilla_data, gorilla_treatments, plot_args)
+plot2 <- generate_plot("X...I.would.seek.out.an.experience.to.personally.interact.with.this.animal.", "Gorilla", gorilla_data, gorilla_treatments)
 #plot2
-plot3 <- generate_plot("X...This.animal.would.make.a.good.pet.", "Gorilla", gorilla_data, gorilla_treatments, plot_args)
+plot3 <- generate_plot("X...This.animal.would.make.a.good.pet.", "Gorilla", gorilla_data, gorilla_treatments)
 #plot3
-plot4 <- generate_plot("X...I.would.like.to.have.this.animal.as.a.pet.", "Gorilla", gorilla_data, gorilla_treatments, plot_args)
+plot4 <- generate_plot("X...I.would.like.to.have.this.animal.as.a.pet.", "Gorilla", gorilla_data, gorilla_treatments)
 #plot4
 
 # General panel of plots for gorilla posts
 figure <- ggarrange(plot1, plot2, plot3, plot4,
                     common.legend = TRUE, legend = "bottom",
                     ncol = 2, nrow = 2)
-figure <- annotate_figure(
-  figure,
-  top = text_grob("Gorilla Posts", face = "bold", size = 25)
-)
 figure
 
 
 
 # Generate plots for loris posts
-plot1 <- generate_plot("X...This.post.depicts.wildlife.research.", "Loris", loris_data, loris_treatments, plot_args)
+plot1 <- generate_plot("X...This.post.depicts.wildlife.research.", "Loris", loris_data, loris_treatments)
 #plot1
-plot2 <- generate_plot("X...I.would.seek.out.an.experience.to.personally.interact.with.this.animal.", "Loris", loris_data, loris_treatments, plot_args)
+plot2 <- generate_plot("X...I.would.seek.out.an.experience.to.personally.interact.with.this.animal.", "Loris", loris_data, loris_treatments)
 #plot2
-plot3 <- generate_plot("X...This.animal.would.make.a.good.pet.", "Loris", loris_data, loris_treatments, plot_args)
+plot3 <- generate_plot("X...This.animal.would.make.a.good.pet.", "Loris", loris_data, loris_treatments)
 #plot3
-plot4 <- generate_plot("X...I.would.like.to.have.this.animal.as.a.pet.", "Loris", loris_data, loris_treatments, plot_args)
+plot4 <- generate_plot("X...I.would.like.to.have.this.animal.as.a.pet.", "Loris", loris_data, loris_treatments)
 #plot4
 
 
@@ -265,8 +141,4 @@ plot4 <- generate_plot("X...I.would.like.to.have.this.animal.as.a.pet.", "Loris"
 figure <- ggarrange(plot1, plot2, plot3, plot4,
                     common.legend = TRUE, legend = "bottom",
                     ncol = 2, nrow = 2)
-figure <- annotate_figure(
-  figure,
-  top = text_grob("Loris Posts", face = "bold", size = 25)
-)
 figure
